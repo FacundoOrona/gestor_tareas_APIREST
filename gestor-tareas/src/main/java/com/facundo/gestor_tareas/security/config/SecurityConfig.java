@@ -1,6 +1,5 @@
 package com.facundo.gestor_tareas.security.config;
 
-import com.facundo.gestor_tareas.security.config.JwtAuthFilter;
 import com.facundo.gestor_tareas.security.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
