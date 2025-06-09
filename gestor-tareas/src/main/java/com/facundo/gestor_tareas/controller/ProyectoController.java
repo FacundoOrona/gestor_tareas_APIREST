@@ -27,5 +27,9 @@ public class ProyectoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    
+    @PostMapping
+    public Proyecto crearProyecto(@RequestBody Proyecto proyecto) {
+        return proyectoService.crearProyecto(proyecto);
+    }
+
 }
