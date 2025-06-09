@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import com.facundo.gestor_tareas.repository.ProyectoRepository;
 import java.util.List;
 import java.util.Optional;
+import com.facundo.gestor_tareas.entities.Proyecto;
 
 @Service
 @RequiredArgsConstructor;
@@ -19,5 +20,13 @@ public class ProyectoServiceImpl implements ProyectoService {
     }
 
     @Override
+    public Optional<Proyecto> obtenerPorId(Long id) {
+        return proyectoRepository.findById(id);
+    }
+
+    @Override
+    public Proyecto crearProyecto(Proyecto proyecto) {
+        return proyectoRepository.save(proyecto);
+    }
 
 }
