@@ -9,7 +9,7 @@ import java.util.Optional;
 import com.facundo.gestor_tareas.entities.Proyecto;
 
 @Service
-@RequiredArgsConstructor;
+@RequiredArgsConstructor
 public class ProyectoServiceImpl implements ProyectoService {
     
     private final ProyectoRepository proyectoRepository;
