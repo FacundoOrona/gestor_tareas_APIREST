@@ -26,4 +26,8 @@ public class TareaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public Tarea create(@RequestBody Tarea tarea) {
+        return tareaService.crearTarea(tarea);
+    }
 }
