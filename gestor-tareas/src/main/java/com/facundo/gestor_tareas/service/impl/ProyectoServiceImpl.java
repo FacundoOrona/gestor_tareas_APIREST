@@ -11,4 +11,9 @@ import lombok.RequiredArgsConstructor;
 public class ProyectoServiceImpl implements ProyectoService {
     
     private final ProyectoRepository proyectoRepository;
+
+    @Override
+    public List<Proyecto> obtenerTodos() {
+        return proyectoRepository.findAll();
+    }
 }
