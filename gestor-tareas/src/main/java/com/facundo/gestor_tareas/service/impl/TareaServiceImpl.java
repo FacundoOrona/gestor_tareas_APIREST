@@ -12,4 +12,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TareaServiceImpl implements TareaService {
     
+    private final TareaRepository tareaRepository;
+
+    @Override
+    public List<Tarea> obtenerTodas() {
+        return tareaRepository.findAll();
+    }
+
 }
