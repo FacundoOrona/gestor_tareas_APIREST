@@ -14,5 +14,10 @@ import java.util.List;
 public class ProyectoController {
 
     private final ProyectoService proyectoService;  
+
+    @GetMapping
+    public List<Proyecto> obtenerTodos() {
+        return proyectoService.obtenerTodos();
+    }
     
 }
