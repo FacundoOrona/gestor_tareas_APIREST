@@ -18,5 +18,12 @@ public class TareaController {
     public List<Tarea> obtenerTodas() {
         return tareaService.obtenerTodas();
     }
-    
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Tarea> obtenerPorId(@PathVariable Long id) {
+        return tareaService.obtenerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
