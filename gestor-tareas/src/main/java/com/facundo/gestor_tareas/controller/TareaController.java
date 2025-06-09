@@ -12,4 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TareaController {
     
+    private final TareaService tareaService;
+
+    @GetMapping
+    public List<Tarea> obtenerTodas() {
+        return tareaService.obtenerTodas();
+    }
+    
 }
