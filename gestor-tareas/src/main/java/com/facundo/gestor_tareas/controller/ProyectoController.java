@@ -19,5 +19,13 @@ public class ProyectoController {
     public List<Proyecto> obtenerTodos() {
         return proyectoService.obtenerTodos();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Proyecto> obtenerPorId(@PathVariable Long id) {
+        return proyectoService.obtenerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     
 }
