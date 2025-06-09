@@ -19,4 +19,8 @@ public class TareaServiceImpl implements TareaService {
         return tareaRepository.findAll();
     }
 
+    @Override  
+    public Optional<Tarea> obtenerPorId(Long id) {
+        return tareaRepository.findById(id);
+    }
 }
