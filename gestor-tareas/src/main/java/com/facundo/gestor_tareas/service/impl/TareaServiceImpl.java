@@ -23,4 +23,9 @@ public class TareaServiceImpl implements TareaService {
     public Optional<Tarea> obtenerPorId(Long id) {
         return tareaRepository.findById(id);
     }
+
+    @Override
+    public Tarea crearTarea(Tarea tarea) {
+        return tareaRepository.save(tarea);
+    }
 }
