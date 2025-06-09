@@ -1,0 +1,15 @@
+package com.facundo.gestor_tareas.controller;
+
+import com.facundo.gestor_tareas.entities.Tarea;
+import com.facundo.gestor_tareas.service.TareaService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/tareas")
+@RequiredArgsConstructor
+public class TareaController {
+    
+}
