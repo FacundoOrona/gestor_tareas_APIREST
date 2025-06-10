@@ -6,6 +6,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "proyectos")
 @Data
@@ -13,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Proyecto {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +26,15 @@ public class Proyecto {
     private String descripcion;
 
     private LocalDate fechaInicio;
-    private LocalDate fechaFin; 
+    private LocalDate fechaFin;
 
-    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Tarea> tareas;
+
+    /*
+     * @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval =
+     * true)
+     * private List<Tarea> tareas;
+     */
 }

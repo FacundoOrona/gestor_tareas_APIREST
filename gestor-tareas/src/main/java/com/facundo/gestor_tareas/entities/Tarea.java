@@ -2,9 +2,10 @@ package com.facundo.gestor_tareas.entities;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Entity
 @Table(name = "tareas")
@@ -13,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Tarea {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,7 +40,15 @@ public class Tarea {
 
     @ManyToOne
     @JoinColumn(name = "proyecto_id")
+    @JsonBackReference
     private Proyecto proyecto;
+
+    /*
+     * @ManyToOne
+     * 
+     * @JoinColumn(name = "proyecto_id")
+     * private Proyecto proyecto;
+     */
 
     public enum Estado {
         PENDIENTE,
