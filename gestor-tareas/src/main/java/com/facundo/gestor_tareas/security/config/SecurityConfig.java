@@ -20,18 +20,30 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .userDetailsService(userDetailsService)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    // 👇 Rutas públicas de Swagger
+                    .requestMatchers(
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml"
+                    ).permitAll()
+                    
+                    // 👇 Rutas públicas de autenticación
+                    .requestMatchers("/auth/**").permitAll()
+
+                    // 👇 Todo lo demás requiere autenticación
+                    .anyRequest().authenticated()
+            )
+            .userDetailsService(userDetailsService)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+}
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
