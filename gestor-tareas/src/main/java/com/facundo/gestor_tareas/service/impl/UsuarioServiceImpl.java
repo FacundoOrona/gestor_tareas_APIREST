@@ -23,5 +23,27 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> obtenerPorId(Long id) {
         return usuarioRepository.findById(id);
     }
+
+    @Override
+    public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
+    return usuarioRepository.findById(id)
+            .map(usuarioExistente -> {
+                if (usuarioActualizado.getNombre() != null && !usuarioActualizado.getNombre().isBlank()) {
+                    usuarioExistente.setNombre(usuarioActualizado.getNombre());
+                }
+                if (usuarioActualizado.getEmail() != null && !usuarioActualizado.getEmail().isBlank()) {
+                    usuarioExistente.setEmail(usuarioActualizado.getEmail());
+                }
+                if (usuarioActualizado.getContraseña() != null && !usuarioActualizado.getContraseña().isBlank()) {
+                    usuarioExistente.setContraseña(usuarioActualizado.getContraseña());
+                }
+                if (usuarioActualizado.getRol() != null) {
+                    usuarioExistente.setRol(usuarioActualizado.getRol());
+                }
+
+                return usuarioRepository.save(usuarioExistente);
+            })
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    }
     
 }
