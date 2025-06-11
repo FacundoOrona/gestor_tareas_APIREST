@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
-    
+
     private final UsuarioService usuarioService;
 
     @GetMapping
@@ -24,6 +24,16 @@ public class UsuarioController {
         return usuarioService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+        try {
+            Usuario actualizado = usuarioService.actualizarUsuario(id, usuario);
+            return ResponseEntity.ok(actualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
