@@ -29,4 +29,19 @@ public class ProyectoServiceImpl implements ProyectoService {
         return proyectoRepository.save(proyecto);
     }
 
+    @Override
+    public Proyecto actualizarProyecto(Long id, Proyecto proyectoActualizado) {
+        return proyectoRepository.findById(id)
+                .map(proyectoExistente -> {
+                    if (proyectoActualizado.getNombre() != null && !proyectoActualizado.getNombre().isBlank()) {
+                        proyectoExistente.setNombre(proyectoActualizado.getNombre());  
+                    }
+                    if (proyectoActualizado.getDescripcion() != null && !proyectoActualizado.getDescripcion().isBlank()) {
+                    proyectoExistente.setDescripcion(proyectoActualizado.getDescripcion());
+                    }
+                    return proyectoRepository.save(proyectoExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
+    }
+
 }
