@@ -9,4 +9,5 @@ public interface TareaService {
     Optional<Tarea> obtenerPorId(Long id);
     Tarea crearTarea(Tarea tarea);
     Tarea actualizarTarea(Long id, Tarea tareaActualizada);
+    void eliminarTarea(Long id);
 }
