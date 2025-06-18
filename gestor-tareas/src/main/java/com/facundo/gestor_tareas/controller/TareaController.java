@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/tareas")
 @RequiredArgsConstructor
 public class TareaController {
-    
+
     private final TareaService tareaService;
 
     @GetMapping
@@ -29,5 +29,15 @@ public class TareaController {
     @PostMapping
     public Tarea create(@RequestBody Tarea tarea) {
         return tareaService.crearTarea(tarea);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Tarea> actualizarTarea(@PathVariable Long id, @RequestBody Tarea tarea) {
+        try {
+            Tarea tareaActualizada = tareaService.actualizarTarea(id, tarea);
+            return ResponseEntity.ok(tareaActualizada);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
