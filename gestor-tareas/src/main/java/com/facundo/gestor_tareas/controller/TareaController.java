@@ -40,4 +40,14 @@ public class TareaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarTarea(@PathVariable Long id) {
+        try {
+            tareaService.eliminarTarea(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
