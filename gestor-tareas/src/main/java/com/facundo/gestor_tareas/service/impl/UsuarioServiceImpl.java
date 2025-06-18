@@ -45,5 +45,13 @@ public class UsuarioServiceImpl implements UsuarioService {
             })
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
     }
+
+    @Override
+    public void eliminarUsuario(Long id) {
+        if(!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuario no existente con el ID: " + id); 
+        }
+        usuarioRepository.deleteById(id);
+    }
     
 }
