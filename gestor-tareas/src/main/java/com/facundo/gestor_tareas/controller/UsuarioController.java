@@ -36,4 +36,14 @@ public class UsuarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
+        try {
+            usuarioService.eliminarUsuario(id);
+            return ResponseEntity.noContent().build(); //204 NO CONTENT
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build(); //404 NOT FOUND
+        }
+    }
+
 }
