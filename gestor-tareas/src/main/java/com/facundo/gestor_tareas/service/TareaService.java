@@ -8,4 +8,5 @@ public interface TareaService {
     List<Tarea> obtenerTodas();
     Optional<Tarea> obtenerPorId(Long id);
     Tarea crearTarea(Tarea tarea);
+    Tarea actualizarTarea(Long id, Tarea tareaActualizada);
 }
