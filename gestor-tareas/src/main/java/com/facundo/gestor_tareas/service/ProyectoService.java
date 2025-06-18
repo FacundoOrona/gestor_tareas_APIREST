@@ -9,4 +9,5 @@ public interface ProyectoService {
     List<Proyecto> obtenerTodos();
     Optional<Proyecto> obtenerPorId(Long id);
     Proyecto crearProyecto(Proyecto proyecto);
+    Proyecto actualizarProyecto(Long id, Proyecto proyectoActualizado);
 }
