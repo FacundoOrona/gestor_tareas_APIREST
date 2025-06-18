@@ -58,4 +58,12 @@ public class TareaServiceImpl implements TareaService {
                 })
                 .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
     }
+
+    @Override
+    public void eliminarTarea (Long id) {
+        if(!tareaRepository.existsById(id)) {
+            throw new RuntimeException("Tarea no existente con el ID " + id);
+        }
+        tareaRepository.deleteById(id);
+    }
 }
