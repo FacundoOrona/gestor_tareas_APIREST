@@ -32,4 +32,13 @@ public class ProyectoController {
         return proyectoService.crearProyecto(proyecto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Proyecto> actualizarProyecto(@PathVariable Long id, @RequestBody Proyecto proyecto) {
+        try {
+            Proyecto actualizado = proyectoService.actualizarProyecto(id, proyecto);
+            return ResponseEntity.ok(actualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
