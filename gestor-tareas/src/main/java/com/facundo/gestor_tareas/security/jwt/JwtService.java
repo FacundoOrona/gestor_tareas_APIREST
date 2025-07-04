@@ -3,14 +3,16 @@ package com.facundo.gestor_tareas.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class JwtService {
     
-    private static final String SECRET_KEY = " ";
+     @Value("${application.security.jwt.secret-key}")
+    private String SECRET_KEY;
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
