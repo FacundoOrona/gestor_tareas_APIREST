@@ -32,9 +32,4 @@ public class Proyecto {
     @JsonManagedReference
     private List<Tarea> tareas;
 
-    /*
-     * @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval =
-     * true)
-     * private List<Tarea> tareas;
-     */
 }

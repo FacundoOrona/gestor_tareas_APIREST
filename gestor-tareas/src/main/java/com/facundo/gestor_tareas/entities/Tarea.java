@@ -43,13 +43,6 @@ public class Tarea {
     @JsonBackReference
     private Proyecto proyecto;
 
-    /*
-     * @ManyToOne
-     * 
-     * @JoinColumn(name = "proyecto_id")
-     * private Proyecto proyecto;
-     */
-
     public enum Estado {
         PENDIENTE,
         EN_PROGRESO,
