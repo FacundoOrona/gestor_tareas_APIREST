@@ -1,0 +1,9 @@
+.navbar {
+  background-color: #dc3545;
+
+  .nav-link {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
