@@ -29,8 +29,10 @@ public class ProyectoController {
     }
 
     @PostMapping
-    public Proyecto crearProyecto(@RequestBody Proyecto proyecto) {
-        return proyectoService.crearProyecto(proyecto);
+    public ResponseEntity<Proyecto> crearProyecto(@RequestBody Proyecto proyecto) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Proyecto creado = proyectoService.crearProyecto(proyecto, email);
+        return ResponseEntity.ok(creado);
     }
 
     @PutMapping("/{id}")
