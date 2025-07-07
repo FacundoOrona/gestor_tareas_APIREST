@@ -32,4 +32,9 @@ public class Proyecto {
     @JsonManagedReference
     private List<Tarea> tareas;
 
+    @ManyToOne
+    @JoinColumn(name = "creador_id")
+    private Usuario creador;
+
+
 }
