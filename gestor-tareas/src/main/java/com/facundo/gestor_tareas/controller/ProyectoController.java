@@ -4,6 +4,7 @@ import com.facundo.gestor_tareas.entities.Proyecto;
 import com.facundo.gestor_tareas.service.ProyectoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,13 @@ public class ProyectoController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/mis")
+    public ResponseEntity<List<Proyecto>> getMisProyectos() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Proyecto> proyectos = proyectoService.obtenerProyectosDelUsuario(email);
+        return ResponseEntity.ok(proyectos);
     }
 
     
