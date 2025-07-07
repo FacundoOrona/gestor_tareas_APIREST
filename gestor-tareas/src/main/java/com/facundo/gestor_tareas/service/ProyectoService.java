@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ProyectoService {
     List<Proyecto> obtenerTodos();
     Optional<Proyecto> obtenerPorId(Long id);
-    Proyecto crearProyecto(Proyecto proyecto);
+    Proyecto crearProyecto(Proyecto proyecto, String emailCreador);
     Proyecto actualizarProyecto(Long id, Proyecto proyectoActualizado);
     List<Proyecto> obtenerProyectosDelUsuario(String email);
 }
