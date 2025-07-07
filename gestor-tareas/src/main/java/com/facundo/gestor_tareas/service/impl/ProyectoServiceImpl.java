@@ -44,4 +44,9 @@ public class ProyectoServiceImpl implements ProyectoService {
                 .orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
     }
 
+    @Override
+    public List<Proyecto> obtenerProyectosDelUsuario(String email){
+        return proyectoRepository.findByCreadorEmail(email);
+    }
+
 }
