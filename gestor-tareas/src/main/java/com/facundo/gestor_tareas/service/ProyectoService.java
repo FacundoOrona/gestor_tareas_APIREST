@@ -10,4 +10,5 @@ public interface ProyectoService {
     Optional<Proyecto> obtenerPorId(Long id);
     Proyecto crearProyecto(Proyecto proyecto);
     Proyecto actualizarProyecto(Long id, Proyecto proyectoActualizado);
+    List<Proyecto> obtenerProyectosDelUsuario(String email);
 }
