@@ -4,15 +4,19 @@ import org.springframework.stereotype.Service;
 import com.facundo.gestor_tareas.service.ProyectoService;
 import lombok.RequiredArgsConstructor;
 import com.facundo.gestor_tareas.repository.ProyectoRepository;
+import com.facundo.gestor_tareas.repository.UsuarioRepository;
+
 import java.util.List;
 import java.util.Optional;
 import com.facundo.gestor_tareas.entities.Proyecto;
+import com.facundo.gestor_tareas.entities.Usuario;
 
 @Service
 @RequiredArgsConstructor
 public class ProyectoServiceImpl implements ProyectoService {
     
     private final ProyectoRepository proyectoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public List<Proyecto> obtenerTodos() {
@@ -25,7 +29,11 @@ public class ProyectoServiceImpl implements ProyectoService {
     }
 
     @Override
-    public Proyecto crearProyecto(Proyecto proyecto) {
+    public Proyecto crearProyecto(Proyecto proyecto, String emailCreador) {
+        Usuario creador = usuarioRepository.findByEmail(emailCreador)
+                .orElseThrow(() -> new RuntimeException("Usuario creador no encontrado: " + emailCreador));
+        
+        proyecto.setCreador(creador);
         return proyectoRepository.save(proyecto);
     }
 
