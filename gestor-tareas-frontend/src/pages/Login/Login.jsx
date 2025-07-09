@@ -1,7 +1,7 @@
-// src/pages/Login/Login.jsx
 import { useState } from 'react';
 import { login } from '../../services/authService';
 import styles from './Login.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ export default function Login() {
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
   const [jwt, setJwt] = useState('');
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -28,9 +30,16 @@ export default function Login() {
     try {
       const response = await login(formData);
       const token = response.data.token;
+      const nombreUsuario = response.data.nombre;
+
       setJwt(token);
       setMensaje('Login exitoso');
+
       localStorage.setItem('token', token);
+      localStorage.setItem('usuario', nombreUsuario);
+
+      navigate('/');  // Redirige al home
+
     } catch (err) {
       setError('Email o contraseña incorrectos');
       console.error(err);
