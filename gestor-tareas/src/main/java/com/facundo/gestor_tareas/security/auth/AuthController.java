@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,22 +32,28 @@ public class AuthController {
                 .rol(Usuario.Rol.MIEMBRO)
                 .build();
         usuarioRepository.save(user);
-        
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String jwt = jwtService.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+
+        return ResponseEntity.ok(new AuthResponse(jwt, user.getNombre()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getContraseña())
-            );
-            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-            String jwt = jwtService.generateToken(userDetails);
-            return ResponseEntity.ok(new AuthResponse(jwt));
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getContraseña()));
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String jwt = jwtService.generateToken(userDetails);
+
+        // Obtener el nombre del usuario desde la base
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        return ResponseEntity.ok(new AuthResponse(jwt, usuario.getNombre()));
     }
-    
+
 }
