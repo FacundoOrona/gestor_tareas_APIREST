@@ -22,7 +22,15 @@ export default function Register() {
     setError('');
 
     try {
-      await registrarUsuario(formData);
+      const response = await registrarUsuario(formData);
+
+      // Guardar token y nombre en localStorage
+      const token = response.data.token;
+      const nombreUsuario = response.data.nombre;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('usuario', nombreUsuario);
+
       navigate('/');
     } catch (err) {
       console.error(err);
