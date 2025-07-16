@@ -11,7 +11,6 @@ export default function Login() {
 
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
-  const [jwt, setJwt] = useState('');
 
   const navigate = useNavigate();
 
@@ -20,6 +19,8 @@ export default function Login() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError('');
+    setMensaje('');
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +33,6 @@ export default function Login() {
       const token = response.data.token;
       const nombreUsuario = response.data.nombre;
 
-      setJwt(token);
       setMensaje('Login exitoso');
 
       localStorage.setItem('token', token);
@@ -41,8 +41,13 @@ export default function Login() {
       navigate('/');  // Redirige al home
 
     } catch (err) {
-      setError('Email o contraseña incorrectos');
       console.error(err);
+
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Error al iniciar sesión');
+      }
     }
   };
 
