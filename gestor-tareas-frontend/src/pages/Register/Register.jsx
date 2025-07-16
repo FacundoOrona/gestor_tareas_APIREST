@@ -10,21 +10,21 @@ export default function Register() {
     contraseña: ''
   });
 
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '', general: '' }); // limpiar error al escribir
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setErrors({});
 
     try {
       const response = await registrarUsuario(formData);
 
-      // Guardar token y nombre en localStorage
       const token = response.data.token;
       const nombreUsuario = response.data.nombre;
 
@@ -34,50 +34,91 @@ export default function Register() {
       navigate('/');
     } catch (err) {
       console.error(err);
-      setError('Error al registrar usuario.');
+
+      if (err.response?.data) {
+        const data = err.response.data;
+
+        if (typeof data === 'string') {
+          setErrors({ general: data });
+        } else if (typeof data === 'object') {
+          if (data.error) {
+            setErrors({ general: data.error });
+          } else {
+            setErrors(data);
+          }
+        } else {
+          setErrors({ general: 'Error al registrar usuario.' });
+        }
+      } else {
+        setErrors({ general: 'Error al registrar usuario.' });
+      }
     }
   };
 
   return (
     <div className={`container ${styles.register}`}>
       <h2 className="text-center mb-4">Registro</h2>
-      <form onSubmit={handleSubmit}>
+
+      {/* Error general */}
+      {errors.general && (
+        <div className="alert alert-danger" role="alert">
+          {errors.general}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">Nombre</label>
           <input
             type="text"
             name="nombre"
-            className="form-control"
+            id="nombre"
+            className={`form-control ${errors.nombre ? 'is-invalid' : ''}`}
             value={formData.nombre}
             onChange={handleChange}
             required
           />
+          {errors.nombre && (
+            <div className="invalid-feedback">{errors.nombre}</div>
+          )}
         </div>
+
         <div className="mb-3">
           <label htmlFor="email" className="form-label">Correo Electrónico</label>
           <input
             type="email"
             name="email"
-            className="form-control"
+            id="email"
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
             value={formData.email}
             onChange={handleChange}
             required
           />
+          {errors.email && (
+            <div className="invalid-feedback">{errors.email}</div>
+          )}
         </div>
+
         <div className="mb-3">
           <label htmlFor="contraseña" className="form-label">Contraseña</label>
           <input
             type="password"
             name="contraseña"
-            className="form-control"
+            id="contraseña"
+            className={`form-control ${errors.contraseña ? 'is-invalid' : ''}`}
             value={formData.contraseña}
             onChange={handleChange}
             required
           />
+          {errors.contraseña && (
+            <div className="invalid-feedback">{errors.contraseña}</div>
+          )}
         </div>
-        {error && <div className="alert alert-danger">{error}</div>}
+
         <div className="text-center">
-          <button type="submit" className="btn btn-danger">Registrarse</button>
+          <button type="submit" className="btn btn-danger">
+            Registrarse
+          </button>
         </div>
       </form>
     </div>
