@@ -1,24 +1,18 @@
-import { useState } from 'react';
-import { login } from '../../services/authService';
+import { useState, useContext } from 'react';
+import { login as loginApi } from '../../services/authService';
 import styles from './Login.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    contraseña: '',
-  });
-
+  const [formData, setFormData] = useState({ email: '', contraseña: '' });
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
-
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
     setMensaje('');
   };
@@ -29,20 +23,18 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await login(formData);
+      const response = await loginApi(formData);
       const token = response.data.token;
       const nombreUsuario = response.data.nombre;
 
       setMensaje('Login exitoso');
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('usuario', nombreUsuario);
+      login(token, nombreUsuario);
 
-      navigate('/');  // Redirige al home
+      navigate('/');
 
     } catch (err) {
       console.error(err);
-
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
