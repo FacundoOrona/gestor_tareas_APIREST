@@ -1,21 +1,18 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styles from './Register.module.scss';
 import { registrarUsuario } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    contraseña: ''
-  });
-
+  const [formData, setFormData] = useState({ nombre: '', email: '', contraseña: '' });
   const [errors, setErrors] = useState({});
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '', general: '' }); // limpiar error al escribir
+    setErrors({ ...errors, [e.target.name]: '', general: '' });
   };
 
   const handleSubmit = async (e) => {
@@ -28,8 +25,7 @@ export default function Register() {
       const token = response.data.token;
       const nombreUsuario = response.data.nombre;
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('usuario', nombreUsuario);
+      login(token, nombreUsuario);
 
       navigate('/');
     } catch (err) {
@@ -59,7 +55,6 @@ export default function Register() {
     <div className={`container ${styles.register}`}>
       <h2 className="text-center mb-4">Registro</h2>
 
-      {/* Error general */}
       {errors.general && (
         <div className="alert alert-danger" role="alert">
           {errors.general}
