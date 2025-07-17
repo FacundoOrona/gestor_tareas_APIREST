@@ -2,8 +2,13 @@ package com.facundo.gestor_tareas.security.auth;
 
 import com.facundo.gestor_tareas.entities.Usuario;
 import com.facundo.gestor_tareas.repository.UsuarioRepository;
+import com.facundo.gestor_tareas.security.entities.TokenInvalidado;
 import com.facundo.gestor_tareas.security.jwt.JwtService;
+import com.facundo.gestor_tareas.security.repository.TokenInvalidadoRepository;
+
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -76,6 +83,25 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Error interno del servidor"));
         }
+    }
+
+    private final TokenInvalidadoRepository tokenInvalidadoRepository;
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+
+            TokenInvalidado tokenInvalidado = new TokenInvalidado();
+            tokenInvalidado.setToken(token);
+            tokenInvalidado.setInvalidadoEn(LocalDateTime.now());
+
+            tokenInvalidadoRepository.save(tokenInvalidado);
+        }
+
+        return ResponseEntity.noContent().build();
     }
 
 }
