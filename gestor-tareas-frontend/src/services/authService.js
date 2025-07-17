@@ -9,3 +9,11 @@ export const registrarUsuario = (data) => {
 export const login = async (data) => {
   return axios.post(`${API_BASE}/login`, data);
 };
+
+export const logout = (token) => {
+  return axios.post(`${API_BASE}/logout`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
